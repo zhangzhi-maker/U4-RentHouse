@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+			http://www.springframework.org/schema/mvc
+			http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+			http://www.springframework.org/schema/context
+			http://www.springframework.org/schema/context/spring-context-4.2.xsd ">
+    <!--开启spring注解扫描包-->
+    <context:component-scan base-package="cn.kgc.*">
+        <!--把service层过滤掉，不让springmvc扫描-->
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"></context:exclude-filter>
+    </context:component-scan>
+    <!--开启springmvc的注解驱动-->
+    <mvc:annotation-driven></mvc:annotation-driven>
+
+    <!--
+        配置能够访问到的静态资源的目录
+        HTML  js css
+    -->
+    <!--<mvc:resources mapping="/static/images/**" location="/static/images/"></mvc:resources>-->
+
+    <!-- 容器默认的DefaultServletHandler处理所有静态内容与无RequestMapping处理的URL-->
+    <!--只拦截请求，不拦截静态资源-->
+    <mvc:default-servlet-handler/>
+
+    <!-- 实现文件上传的配置  -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="maxUploadSize" value="5242880"/>
+    </bean>
+
+    <!--配置视图解析器-->
+    <!--视图解析器会自动拼接路径-->
+    <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--配置前缀-->
+        <property name="prefix" value="/page/"></property>
+        <!--配置后缀-->
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+</beans>
